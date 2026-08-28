@@ -22,7 +22,8 @@ jobs:
       - uses: actions/checkout@v7
 
       - name: 安裝 uv
-        uses: astral-sh/setup-uv@v10
+        # setup-uv 不維護 v10 這類 major 移動標籤,必須指定完整版本
+        uses: astral-sh/setup-uv@v10.0.1
         with:
           enable-cache: true
 
@@ -40,7 +41,8 @@ jobs:
       - uses: actions/checkout@v7
 
       - name: 安裝 uv
-        uses: astral-sh/setup-uv@v10
+        # setup-uv 不維護 v10 這類 major 移動標籤,必須指定完整版本
+        uses: astral-sh/setup-uv@v10.0.1
         with:
           enable-cache: true
 
