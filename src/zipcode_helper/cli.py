@@ -9,7 +9,7 @@ from __future__ import annotations
 import argparse
 import logging
 import sys
-from collections.abc import Iterable, Iterator, Sequence
+from collections.abc import Iterable, Sequence
 from pathlib import Path
 from typing import TextIO
 

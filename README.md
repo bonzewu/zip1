@@ -1,5 +1,9 @@
 # 郵遞區號小幫手(zipcode-helper)
 
+[![CI](https://github.com/bonzewu/zip1/actions/workflows/ci.yml/badge.svg)](https://github.com/bonzewu/zip1/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](#授權)
+
 輸入台灣中文地址,輸出 **3+3 六碼郵遞區號**的命令列工具。
 資料來源為 [zip5.5432.tw](https://zip5.5432.tw) 提供的公開 API。
 
@@ -196,6 +200,9 @@ uv pip install -e '.[dev]'
 
 # 涵蓋率
 .venv/bin/pytest --cov=zipcode_helper --cov-report=term-missing
+
+# 程式碼檢查
+uvx ruff check src tests
 ```
 
 測試分層:
@@ -206,6 +213,16 @@ uv pip install -e '.[dev]'
 | `tests/test_unit_formatter.py` | 單元 | stdout / stderr / JSON 的輸出格式 |
 | `tests/test_functional_cli.py` | 功能 | 注入假 API,走完整 CLI 流程與離開碼 |
 | `tests/test_e2e_cli.py` | 端對端 | 子行程執行 CLI,對本機假伺服器與真實 API |
+
+### 持續整合
+
+| Workflow | 觸發時機 | 內容 |
+| --- | --- | --- |
+| `.github/workflows/ci.yml` | 推送到 `main`、Pull Request、手動 | ruff 檢查 + 在 Python 3.11 / 3.12 / 3.13 / 3.14 上執行測試 |
+| `.github/workflows/api-check.yml` | 每週一 09:00(台北時間)、手動 | 對真實 zip5.5432.tw API 執行端對端測試 |
+
+真實 API 測試刻意與主 CI 分開,避免每次推送都消耗站方的查詢配額;
+它的用途是在 API 回應格式改變時及早發現。
 
 ## 專案結構
 

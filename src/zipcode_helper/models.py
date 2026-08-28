@@ -8,7 +8,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Union
 
 #: API 預設端點,可透過 QueryConfig 覆寫(測試時會指向本機假伺服器)
 DEFAULT_BASE_URL = "https://zip5.5432.tw/zip5json.py"
@@ -82,7 +81,7 @@ class Failure:
 
 
 #: 單筆查詢的結果型別(成功或失敗)
-Outcome = Union[Success, Failure]
+Outcome = Success | Failure
 
 
 @dataclass(frozen=True)

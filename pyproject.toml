@@ -25,6 +25,33 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/zipcode_helper"]
 
+[tool.ruff]
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle 錯誤
+    "F",    # pyflakes
+    "W",    # pycodestyle 警告
+    "I",    # isort:import 排序
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "S",    # flake8-bandit:安全性
+    "RUF",  # ruff 專屬規則
+]
+
+[tool.ruff.lint.per-file-ignores]
+# 測試中大量使用 assert,且會刻意連向本機測試伺服器與檢查子行程回傳碼
+"tests/*" = [
+    "S101",   # 允許 assert
+    "S603",   # 允許以子行程執行 CLI
+    "S310",   # 允許對本機測試伺服器發出 urlopen 請求
+    "N802",   # 測試函式刻意以中文命名,提高失敗訊息的可讀性
+    "RUF001", # 測試資料保留 API 實際回傳的全形數字(如「羅斯福路４段」)
+]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"

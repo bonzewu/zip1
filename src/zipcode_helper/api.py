@@ -198,7 +198,9 @@ def fetch_raw(url: str, timeout: float, user_agent: str) -> bytes:
         urllib.error.URLError: 連線失敗或 HTTP 狀態碼異常。
         TimeoutError: 連線或讀取逾時。
     """
-    request = urllib.request.Request(
+    # 說明:網址一律由 build_url() 從設定中的 http/https 端點組出,
+    # 不會出現 file: 或自訂 scheme,因此以下兩處抑制 S310 的來源檢查警告。
+    request = urllib.request.Request(  # noqa: S310
         url,
         headers={"User-Agent": user_agent, "Accept": "application/json"},
     )

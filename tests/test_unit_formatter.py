@@ -78,7 +78,9 @@ class TestFormatWarning:
         assert "查無此地址" in warning
 
     def test_空白地址的提醒可讀(self) -> None:
-        failure = Failure(address="", kind=FailureKind.EMPTY_ADDRESS, message="地址不可為空白")
+        failure = Failure(
+            address="", kind=FailureKind.EMPTY_ADDRESS, message="地址不可為空白"
+        )
 
         assert "(空白)" in (format_warning(failure, strict=False) or "")
 

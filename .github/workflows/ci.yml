@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# 同一分支的新推送會取消尚在執行的舊流程,避免浪費執行時間
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: 程式碼檢查(ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: 安裝 uv
+        uses: astral-sh/setup-uv@v10
+        with:
+          enable-cache: true
+
+      - name: 執行 ruff
+        run: uvx ruff check src tests
+
+  test:
+    name: 測試(Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: 安裝 uv
+        uses: astral-sh/setup-uv@v10
+        with:
+          enable-cache: true
+
+      - name: 建立虛擬環境
+        run: uv venv --python ${{ matrix.python-version }}
+
+      - name: 安裝相依套件
+        run: uv pip install -e '.[dev]'
+
+      # 這裡不加 --run-e2e:對真實 API 的查詢由 api-check.yml 定期執行,
+      # 避免每次推送都消耗 zip5.5432.tw 的查詢配額。
+      - name: 執行單元、功能與本機端對端測試
+        run: uv run pytest -q --cov=zipcode_helper --cov-report=term-missing

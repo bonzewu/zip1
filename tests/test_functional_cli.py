@@ -10,8 +10,8 @@ import json
 import urllib.error
 
 import pytest
-from conftest import PAYLOAD_FULL, FakeFetcher, encode
 
+from conftest import PAYLOAD_FULL, FakeFetcher, encode
 from zipcode_helper.cli import clean_address_lines, decide_exit_code, main
 from zipcode_helper.models import Failure, FailureKind, Success
 
@@ -82,7 +82,7 @@ class TestSingleAddress:
         assert "查無此地址" in err
 
     def test_quiet_參數會壓掉警告(self, run_cli) -> None:
-        code, out, err = run_cli(["-q", "不存在的亂碼地址xyz"])
+        code, _, err = run_cli(["-q", "不存在的亂碼地址xyz"])
 
         assert code == 1
         assert err == ""
@@ -148,7 +148,7 @@ class TestFileAndStdin:
         path = tmp_path / "more.txt"
         path.write_text("臺北市大安區羅斯福路四段1號\n", encoding="utf-8")
 
-        code, out, _ = run_cli(["台北市信義區市府路1號", "-f", str(path)])
+        _, out, _ = run_cli(["台北市信義區市府路1號", "-f", str(path)])
 
         assert out == "110204\n10617\n"
 
@@ -205,7 +205,7 @@ class TestInteractiveMode:
         assert out == "110204\n"  # q 之後的地址不會被查詢
 
     def test_空白行會被略過(self, run_cli) -> None:
-        code, out, _ = run_cli([], stdin_text="\n\n台北市信義區市府路1號\n", tty=True)
+        _, out, _ = run_cli([], stdin_text="\n\n台北市信義區市府路1號\n", tty=True)
 
         assert out == "110204\n"
 

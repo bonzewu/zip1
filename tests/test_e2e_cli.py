@@ -86,7 +86,13 @@ class TestAgainstLocalServer:
     def test_無法連線的端點會回報網路錯誤(self) -> None:
         # 127.0.0.1:1 幾乎不可能有服務在聽
         result = run_cli(
-            ["--base-url", "http://127.0.0.1:1/zip5json.py", "-d", "0", "台北市信義區市府路1號"]
+            [
+                "--base-url",
+                "http://127.0.0.1:1/zip5json.py",
+                "-d",
+                "0",
+                "台北市信義區市府路1號",
+            ]
         )
 
         assert result.returncode == 1

@@ -7,13 +7,13 @@ import urllib.error
 import urllib.parse
 
 import pytest
+
 from conftest import (
     PAYLOAD_FIVE_ONLY,
     PAYLOAD_FULL,
     PAYLOAD_NOT_FOUND,
     encode,
 )
-
 from zipcode_helper.api import (
     build_ssl_context,
     build_url,
@@ -260,7 +260,11 @@ class TestQueryAddresses:
             return encode(PAYLOAD_FULL)
 
         results = list(
-            query_addresses(["壞掉的", "台北市信義區市府路1號"], fetch=flaky_fetch, sleep=sleep_fn)
+            query_addresses(
+                ["壞掉的", "台北市信義區市府路1號"],
+                fetch=flaky_fetch,
+                sleep=sleep_fn,
+            )
         )
 
         assert isinstance(results[0], Failure)

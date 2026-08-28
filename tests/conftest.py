@@ -132,7 +132,7 @@ def no_sleep():
 class FakeApiHandler(BaseHTTPRequestHandler):
     """依查詢字串中的地址關鍵字回傳對應的假郵遞區號資料。"""
 
-    def do_GET(self) -> None:  # noqa: N802 - BaseHTTPRequestHandler 的介面
+    def do_GET(self) -> None:  # BaseHTTPRequestHandler 規定的介面名稱
         query = urllib.parse.urlparse(self.path).query
         address = urllib.parse.parse_qs(query).get("adrs", [""])[0]
 
